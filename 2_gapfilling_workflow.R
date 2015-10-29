@@ -65,7 +65,7 @@ summary(tree.data)
 # Site Data (for year cored) 
 Site.data <- read.csv("raw_input_files/DOE_plus_valles.csv", na.strings="")
 Site.data$Year.sample <- as.numeric(substr(Site.data$date.sample,7,10))
-Site.data <- Site.data[!is.na(Site.data$PlotID),] # something was getting read in weird, so lets get rid of any false rows
+Site.data <- Site.data[na.omit(Site.data$PlotID),] # something was getting read in weird, so lets get rid of any false rows
 summary(Site.data)
 
 # merging in the year sampled into the tree data & calculating age
@@ -110,22 +110,26 @@ tree.data2 <- tree.data[tree.data$PlotID %in% unique(ring.data$PlotID),]
 summary(tree.data2)
 
 # Need to remove species for which we have no pith estimates for the time being
-Species.pith <- unique(tree.data2[!is.na(tree.data2$Pith), "Species"])
+Species.pith <- unique(tree.data2[na.omit(tree.data2$Pith), "Species"])
+summary(Species.pith)
 tree.data3 <- tree.data2[tree.data2$Species %in%  Species.pith,]
 summary(tree.data3)
 
 qplot(DBH..cm., Age, color=Species, data=tree.data3) + facet_wrap(~Species) +
 	stat_smooth(method="lm", alpha=0.5, size=1.5) +
 	theme_bw()
-###"error in layout_base(data, vars, drop=drop): At least one layer must contain all variables used for facetting"-possible issue for later?
+###FLAGGED:"Error in layout_base(data, vars, drop=drop): At least one layer must contain all variables used for facetting"-possible issue for later?
 
 # Making a very basic linear model looking at Site-specific species-DBH..cm.-age relationships
 dbh.age <- lm(Age ~ Species*DBH..cm.*Site-1, data=tree.data3)
+###FLAGGED:"Error in eval(expr, envir, enclos) : object 'Species' not found"
 summary(dbh.age)
 summary(dbh.age)$r.squared # Note, this very basic model works pretty well!
+###FLAGGED: "Error: object 'dbh.age' not found"
 
 # Using the prediction interval to get us a higher upper bound
 age.pi <- predict(dbh.age, newdata=tree.data3, interval="predict")
+###FLAGGED: Error: object 'dbh.age' and 'age.pi' not found
 summary(age.pi)
 dim(age.pi); dim(tree.data3) # Making sure we didn't lose any rows along the way
 
@@ -340,6 +344,6 @@ summary(data.all) # This should introduce a handful of NAs back in
 
 write.csv(data.all, "processed_data/RingData_All_Gapfilled.csv", row.names=F)
 # ----------------------------------------------------------------
-
+###Because this script is not working (root of issue I believe is pith data is not being read in for some reason)
 
 

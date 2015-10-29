@@ -117,7 +117,7 @@ summary(tree.data3)
 qplot(DBH..cm., Age, color=Species, data=tree.data3) + facet_wrap(~Species) +
 	stat_smooth(method="lm", alpha=0.5, size=1.5) +
 	theme_bw()
-
+###"error in layout_base(data, vars, drop=drop): At least one layer must contain all variables used for facetting"-possible issue for later?
 
 # Making a very basic linear model looking at Site-specific species-DBH..cm.-age relationships
 dbh.age <- lm(Age ~ Species*DBH..cm.*Site-1, data=tree.data3)

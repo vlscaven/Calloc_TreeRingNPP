@@ -27,6 +27,7 @@ summary(core.data)
 #Load in the gap-filled data
 ring.data <- read.csv("processed_data/RingData_All_Gapfilled.csv", header=T)
 summary(ring.data)
+###until we get 2_gapfilling working, this file does not exist
 
 # making a data frame with trees as columns and years as ros
 ring.data$Year <- as.factor(ring.data$Year)

@@ -72,6 +72,7 @@ summary(Site.data)
 tree.data <- merge(tree.data, Site.data[,c("PlotID", "Year.sample")], all.x=T, all.y=F)
 tree.data$PlotID
 tree.data$Age <- tree.data$Year.sample - tree.data$Pith
+###FLAGGED: "Error in `$<-.data.frame`(`*tmp*`, "Age", value = numeric(0)) : replacement has 0 rows, data has 60"
 summary(tree.data)
 
 # We're going to run 2 sets of fillin models:

@@ -63,10 +63,6 @@ tree.data <- read.csv("processed_data/TreeData.csv")
 summary(tree.data)
 
 # Site Data (for year cored) 
-Site.data <- read.csv("raw_input_files/DOE_plus_valles.csv", na.strings="")
-Site.data$Year.sample <- as.numeric(substr(Site.data$date.sample,7,10))
-Site.data <- Site.data[na.omit(Site.data$PlotID),] # something was getting read in weird, so lets get rid of any false rows
-summary(Site.data)
 
 # merging in the year sampled into the tree data & calculating age
 tree.data <- merge(tree.data, Site.data[,c("PlotID", "Year.sample")], all.x=T, all.y=F)
@@ -111,7 +107,8 @@ tree.data2 <- tree.data[tree.data$PlotID %in% unique(ring.data$PlotID),]
 summary(tree.data2)
 
 # Need to remove species for which we have no pith estimates for the time being
-Species.pith <- unique(tree.data2[na.omit(tree.data2$Pith), "Species"])
+###FLAGGED: tree.data3 is an empty data set
+Species.pith <- tree.data2[na.omit(tree.data2$Pith), "Species"]
 summary(Species.pith)
 tree.data3 <- tree.data2[tree.data2$Species %in%  Species.pith,]
 summary(tree.data3)
